@@ -1,0 +1,95 @@
+---
+title: 'Democracy and Redistribution - Now with Regression!'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<style type="text/css">
+    ol { list-style-type: lower-alpha; }
+</style>
+
+## Instructions 
+
+A long-standing debate in the social sciences is whether democracies redistribute more to the poor than autocracies.  Research on this topic is challenging, however, due to the prevalence of missing data. Information about particular countries (and variables) are often missing, and this absence of data is not random. For example, autocratic countries are less likely to report their data to international institutions like the World Bank. Also, starting in the 1990s, countries have become better at both collecting and reporting data on different indicators such as economic growth or infant mortality. So if we just analyze data without taking these factors into account, we might bias our results. This exercise is based on the following prominent paper:
+
+Ross, Michael (2006), "[Is Democracy Good for the Poor](https://doi.org/10.1111/j.1540-5907.2006.00220.x)", *American Journal of Political Science*, Vol. 50, No. 4, pp. 860 - 874.  
+
+Prior to Ross' work, the prevailing belief was that democracies redistributed to the poor more than autocracies.  Ross's work challenged this belief. Specifically, Ross argued that previous studies had paid insufficient attention to differences between countries and time trends. Further, Ross argued that their analysis did not address the problem of missing data.
+
+Below you will find a dictionary with the main variables in two datasets we analyze:
+
+**World Bank:** `world_bank.csv`
+
+Name                 Description
+-------------------  --------------------------------------------------------
+`country_name`        Country name.
+`country_code`        Country abbreviation.
+`year`                Year.
+`gdp_growth`          GDP growth rate (percentage).      
+`gdp_per_capita`      GDP per capita (2000 US$).
+`inf_mort`            Infant mortality (deaths per 1000 children under 5).
+`pop_density`         Population density (per sq. km).
+
+**Polity IV:** `polity.csv`
+
+Name                 Description
+-------------------  ---------------------------------------------------------
+`scode`               Country abbreviation.
+`year`                Year.
+`polity`              Polity Score. Ranges from -10 (most autocratic) to 10 (most democratic)
+
+
+## Question 1: Merging the Data
+
+We want to know if democracies have better infant mortality rates (`inf_mort`). There are some other factors which might also impact infant mortality, such as GDP per capita (gdp_per_capita), year (year) and population density (`pop_density`). Since these variables might also be driving infant mortality rates, we should control for them as well.
+
+This means that you will need to merge the `polity.csv` dataset with the `world_bank.csv` dataset.
+
+You'll notice that the `polity.csv` data is in wide format rather than long. It has columns that correspond to countries and the values of those columns are the polity for that country in a particular year. As is often the case, we want this data in long format, where the country is recorded in its own column rather than across many different columns. Read in the data and use `pivot_longer()` to turn it into long format.
+
+Once you have pivoted you will be able to join the datasets. Two of the most common types of joins are `left_join()`, which keeps all rows in the "left-hand" data regardless of whether there is a match in the data being joined (the "right-hand" data), and `inner_join()`, which keeps only the rows that are present in both datasets.  
+
+
+## Question 2: Scatterplot
+
+Now that we have joined the two datasets together, we can examine the relationship between variables in them. We want to know how infant mortality is related to Polity score. Create a scatterplot with Polity score on the $x$-axis and infant mortality on the $y$-axis. Add a smooth line using `geom_smooth(method = lm)`. What is this plot telling you? 
+
+
+
+## Question 3: Regression
+
+Now that we have a good understanding of the data from our visualization, let's run a basic regression with only `inf_mort` as the y variable and `polity` as the x variable. Describe your results. Is the effect of Polity statistically significant?
+
+
+
+
+## Question 4: Causality?
+
+Is this relationship causal? What other factors might confound the results from question 3? What might we need to do to find a causal relationship here?
+
+
+
+## Question 5: Scatterplot - Potential Confounders Infant Mortality
+
+Make two more scatter plots with smooths. For your first plot put `year` on the X axis and Infant mortality on the Y axis and for your second put **log**`gdp_per_capita` on the X axis and Infant mortality on the Y axis. Do ethier of their variables decrease infant mortality? 
+
+
+
+
+
+## Question 6: Regression - Potential Confounders Infant Mortality
+
+Now that we see that `year` and `gdp_per_capita` may have a relationship with Infant Mortality, let's include them in our regression model. Let's also include `pop_density`. What do we learn from this? Does democracy still reduce infant mortality? Which model is better at explaining variation in infant mortality rates and why?
+
+
+
+
+## Optional! Question 7: Regression Again
+
+Someone might argue that perhaps it is still unfair to pool countries in such a regression because each state might be unique and special with it's own history that might impact infant mortality? How might you account for this? What happens to the effect of polity on infant mortality when you add `country_name` to your regression model?
+
+
+
+
+
